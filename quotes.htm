@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Handlebars1</title>
+    <script src="handlebars-v4.0.12.js"></script>
+</head>
+
+<body>
+    <div id="quote_data"></div>
+
+    <script id="quote-template" type="text/x-handlebars-template">
+        <h3>Favorite {{name}} Quotes</h3>
+        <ol>
+            {{#each quotes}}
+            <li>{{quote}}</li>
+            {{/each}}
+        </ol>
+        {{{ michaelBio }}} <br/><br /> {{ makeLink "Michael Museum" "http://google.com" }}
+    </script>
+    <script type="text/javascript">
+        var quoteInfo = document.querySelector("#quote-template").innerHTML;
+
+        var template = Handlebars.compile(quoteInfo);
+
+        Handlebars.registerHelper("makeLink", (text, url) => {
+            text = Handlebars.Utils.escapeExpression(text);
+            url = Handlebars.Utils.escapeExpression(url);
+
+            var theLink = '<a href="' + url + '">' + text + '</a>';
+
+            return new Handlebars.SafeString(theLink);
+        });
+
+        var quoteData = template({
+            name: "Michael",
+            quotes: [{
+                quote: "Jesus is the King of kings"
+            }, {
+                quote: "Lamb of God"
+            }, {
+                quote: "The saviour of my soul"
+            }],
+            michaelBio: '<i>The son of the lion of the tribe of Judah</i>'
+        })
+
+        document.querySelector("#quote_data").innerHTML += quoteData;
+    </script>
+</body>
+
+</html>
